@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0099E1522A840E9900E41DD1 /* CountryViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0099E1512A840E9900E41DD1 /* CountryViewData.swift */; };
+		0099E1542A84175200E41DD1 /* MockCountriesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0099E1532A84175200E41DD1 /* MockCountriesService.swift */; };
 		448C13182A7072DE00FA269E /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C13172A7072DE00FA269E /* NetworkClient.swift */; };
-		448C131B2A707A2100FA269E /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C13192A70793E00FA269E /* Service.swift */; };
+		448C131B2A707A2100FA269E /* CountriesServise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C13192A70793E00FA269E /* CountriesServise.swift */; };
 		448C131D2A71A00D00FA269E /* DI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C131C2A71A00D00FA269E /* DI.swift */; };
 		448C131F2A75A8FF00FA269E /* CountryInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C131E2A75A8FE00FA269E /* CountryInfoViewController.swift */; };
 		448C13232A7AD5B800FA269E /* UIImage+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448C13222A7AD5B700FA269E /* UIImage+Async.swift */; };
@@ -23,8 +25,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0099E1512A840E9900E41DD1 /* CountryViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryViewData.swift; sourceTree = "<group>"; };
+		0099E1532A84175200E41DD1 /* MockCountriesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCountriesService.swift; sourceTree = "<group>"; };
 		448C13172A7072DE00FA269E /* NetworkClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
-		448C13192A70793E00FA269E /* Service.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		448C13192A70793E00FA269E /* CountriesServise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountriesServise.swift; sourceTree = "<group>"; };
 		448C131C2A71A00D00FA269E /* DI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DI.swift; sourceTree = "<group>"; };
 		448C131E2A75A8FE00FA269E /* CountryInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryInfoViewController.swift; sourceTree = "<group>"; };
 		448C13222A7AD5B700FA269E /* UIImage+Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Async.swift"; sourceTree = "<group>"; };
@@ -75,7 +79,7 @@
 				449235C52A6D76AA004250A0 /* ViewController.swift */,
 				448C131E2A75A8FE00FA269E /* CountryInfoViewController.swift */,
 				448C13222A7AD5B700FA269E /* UIImage+Async.swift */,
-				448C13192A70793E00FA269E /* Service.swift */,
+				448C13192A70793E00FA269E /* CountriesServise.swift */,
 				448C131C2A71A00D00FA269E /* DI.swift */,
 				448C13172A7072DE00FA269E /* NetworkClient.swift */,
 				449235D92A6D8D08004250A0 /* Request.swift */,
@@ -84,6 +88,8 @@
 				449235CA2A6D76AD004250A0 /* Assets.xcassets */,
 				449235CC2A6D76AD004250A0 /* LaunchScreen.storyboard */,
 				449235CF2A6D76AD004250A0 /* Info.plist */,
+				0099E1512A840E9900E41DD1 /* CountryViewData.swift */,
+				0099E1532A84175200E41DD1 /* MockCountriesService.swift */,
 			);
 			path = restCountries;
 			sourceTree = "<group>";
@@ -158,15 +164,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				448C131B2A707A2100FA269E /* Service.swift in Sources */,
+				448C131B2A707A2100FA269E /* CountriesServise.swift in Sources */,
 				449235C62A6D76AA004250A0 /* ViewController.swift in Sources */,
 				448C131D2A71A00D00FA269E /* DI.swift in Sources */,
 				449235DA2A6D8D08004250A0 /* Request.swift in Sources */,
 				448C131F2A75A8FF00FA269E /* CountryInfoViewController.swift in Sources */,
 				448C13232A7AD5B800FA269E /* UIImage+Async.swift in Sources */,
+				0099E1542A84175200E41DD1 /* MockCountriesService.swift in Sources */,
 				449235D82A6D8B8F004250A0 /* NetworkConfig.swift in Sources */,
 				448C13182A7072DE00FA269E /* NetworkClient.swift in Sources */,
 				449235D62A6D76B8004250A0 /* Model.swift in Sources */,
+				0099E1522A840E9900E41DD1 /* CountryViewData.swift in Sources */,
 				449235C22A6D76AA004250A0 /* AppDelegate.swift in Sources */,
 				449235C42A6D76AA004250A0 /* SceneDelegate.swift in Sources */,
 			);

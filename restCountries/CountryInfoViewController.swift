@@ -9,48 +9,42 @@ import UIKit
 
 class CountryInfoViewController: UIViewController {
 
-    private let item: Country
+    private let item: CountryViewData
+    private let countriesService: CountriesServiceProtocol
 
     private let flagImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-       // image.image = UIImage(named: "https://upload.wikimedia.org/wikipedia/ru/a/a4/Vagabund.png")
-        image.backgroundColor = .red
         return image
     }()
     
     private let coatOfArms: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.backgroundColor = .brown
         return image
     }()
     
     private lazy var currency: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .cyan
         return label
     }()
     
     private let independent: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .darkGray
         return label
     }()
     
     private let unMember: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .green
         return label
     }()
     
     private let population: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .purple
         return label
     }()
     
@@ -58,12 +52,12 @@ class CountryInfoViewController: UIViewController {
     private let capital: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .systemPink
         return label
     }()
-    
-    init(item: Country) {
+    //init(fullName: String) ------> load with api method fullName
+    init(countriesService: CountriesServiceProtocol, item: CountryViewData) {
         self.item = item
+        self.countriesService = countriesService
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -81,45 +75,57 @@ class CountryInfoViewController: UIViewController {
         view.addSubview(currency)
         view.addSubview(independent)
         view.addSubview(unMember)
+        navigationItem.title = item.name
         setupConstraints()
         fillData()
     }
     
     private func fillData() {
-        coatOfArms.loadImage(imageUrl: item.coatOfArms.png ?? "")
-        flagImage.loadImage(imageUrl: item.flags.png ?? "")
+//        coatOfArms.loadImage(imageUrl: item.coatOfArms.png ?? "")
+//        flagImage.loadImage(imageUrl: item.flags.png ?? "")
+//        capital.text = "capital: \(item.capital![0])"
+//        population.text = "population: \(String(item.population))"
+//        independent.text = "independent: \(item.independent == true ? "Yes" : "No")"
+//        unMember.text = "unMember: \(item.unMember == true ? "Yes" : "No")"
+        
+        coatOfArms.loadImage(imageUrl: item.coatOfArmsImageUrl)
+        flagImage.loadImage(imageUrl: item.flagImageUrl)
+        capital.text = item.capital
+        population.text = item.population
+        independent.text = item.independent
+        unMember.text = item.unmember
     }
     
     private func setupConstraints(){
         NSLayoutConstraint.activate([
             flagImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            flagImage.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 5),
-            flagImage.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -view.safeAreaLayoutGuide.layoutFrame.size.width/2), // anchorX
+            flagImage.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 5),
+            flagImage.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -view.safeAreaLayoutGuide.layoutFrame.size.width/2), // anchorX
             flagImage.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2*view.safeAreaLayoutGuide.layoutFrame.size.height/3),
             
             coatOfArms.topAnchor.constraint(equalTo: flagImage.topAnchor),
-            coatOfArms.leftAnchor.constraint(equalTo: flagImage.rightAnchor, constant: 5),
-            coatOfArms.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -5),
+            coatOfArms.leadingAnchor.constraint(equalTo: flagImage.trailingAnchor, constant: 5),
+            coatOfArms.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -5),
             coatOfArms.bottomAnchor.constraint(equalTo: flagImage.bottomAnchor),
             
             capital.topAnchor.constraint(equalTo: flagImage.bottomAnchor, constant: 10),
-            capital.leftAnchor.constraint(equalTo: flagImage.leftAnchor),
-            capital.rightAnchor.constraint(equalTo: flagImage.rightAnchor),
+            capital.leadingAnchor.constraint(equalTo: flagImage.leadingAnchor),
+            capital.trailingAnchor.constraint(equalTo: flagImage.trailingAnchor),
             capital.bottomAnchor.constraint(equalTo: capital.topAnchor, constant: 20),
             
             population.topAnchor.constraint(equalTo: coatOfArms.bottomAnchor, constant: 10),
-            population.leftAnchor.constraint(equalTo: coatOfArms.leftAnchor),
-            population.rightAnchor.constraint(equalTo: coatOfArms.rightAnchor),
+            population.leadingAnchor.constraint(equalTo: coatOfArms.leadingAnchor),
+            population.trailingAnchor.constraint(equalTo: coatOfArms.trailingAnchor),
             population.bottomAnchor.constraint(equalTo: population.topAnchor, constant: 20),
             
-            currency.topAnchor.constraint(equalTo: capital.bottomAnchor, constant: 10),
-            currency.leftAnchor.constraint(equalTo: capital.leftAnchor),
-            currency.rightAnchor.constraint(equalTo: capital.rightAnchor),
-            currency.bottomAnchor.constraint(equalTo: currency.topAnchor, constant: 20),
+            unMember.topAnchor.constraint(equalTo: capital.bottomAnchor, constant: 10),
+            unMember.leadingAnchor.constraint(equalTo: capital.leadingAnchor),
+            unMember.trailingAnchor.constraint(equalTo: capital.trailingAnchor),
+            unMember.bottomAnchor.constraint(equalTo: unMember.topAnchor, constant: 20),
             
             independent.topAnchor.constraint(equalTo: population.bottomAnchor, constant: 10),
-            independent.leftAnchor.constraint(equalTo: population.leftAnchor),
-            independent.rightAnchor.constraint(equalTo: population.rightAnchor),
+            independent.leadingAnchor.constraint(equalTo: population.leadingAnchor),
+            independent.trailingAnchor.constraint(equalTo: population.trailingAnchor),
             independent.bottomAnchor.constraint(equalTo: independent.topAnchor, constant: 20),
             
             

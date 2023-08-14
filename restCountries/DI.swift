@@ -14,7 +14,7 @@ class DI {
        return NetworkClient()
     }()
 
-    lazy var service: Service = {
-        return Service(networkClient: networkClient)
+    lazy var service: CountriesService = {
+        return CountriesService(networkClient: networkClient)
     }()
 }
