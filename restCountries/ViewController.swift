@@ -47,7 +47,7 @@ class ViewController: UIViewController {
         navigationItem.title = "Countires List"
         tableView.delegate = self
         tableView.dataSource = self
-         
+        
         createSearchBar()
         
     }
@@ -86,54 +86,26 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate, UISearchBa
     
     // Search
     
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        print("searchBarSearchButtonClicked " + searchBar.text!)
-//        guard let text = searchBar.text, !text.isEmpty else {
-//            return
-//        }
-//        countriesService.loadFilteredCountries(searchText: text) { [weak self] data in
-//            guard let self = self else {return}
-//            DispatchQueue.main.async {
-//                self.allCountries = data
-//                self.tableView.reloadData()
-//            }
-//
-//        }
-//    }
     
-/*    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        var newText = ""
-        print("text " + text)
-        searchBar.text = searchBar.text ?? "" + text
-        print("searchBar.text + \(searchBar.text)")
-        if !text.isEmpty {
-            newText = searchBar.text ?? ""
-        }
-        print("newText + \(newText)")
-        countriesService.loadFilteredCountries(searchText: newText) { [weak self] data in
-            guard let self = self else {return}
-            DispatchQueue.main.async {
-                self.allCountries = data
-                self.tableView.reloadData()
-            }
-            
-        }
-        return true
-    }
-*/
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        print("searchText " + searchText)
-//        guard let text = searchBar.text, !text.isEmpty else {
-//            return
-//        }
-        print("searchBarSearchButtonClicked " + searchText)
-        countriesService.loadFilteredCountries(searchText: searchText) { [weak self] data in
-            guard let self = self else {return}
-            DispatchQueue.main.async {
-                self.allCountries = data
-                self.tableView.reloadData()
+        
+        if searchText != "" {
+            countriesService.loadFilteredCountries(searchText: searchText) { [weak self] data in
+                guard let self = self else {return}
+                DispatchQueue.main.async {
+                    self.allCountries = data
+                    self.tableView.reloadData()
+                }
             }
-
+        } else if searchText == "" {
+            countriesService.loadCountries { [weak self] countries in //countriesServise, countriesLoadData
+                let countriesViewData = countries.map { CountryViewData(country: $0) }
+                guard let self = self else {return}
+                DispatchQueue.main.async {
+                    self.allCountries = countries
+                    self.tableView.reloadData()
+                }
+            }
         }
     }
     
