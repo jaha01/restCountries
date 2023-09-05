@@ -10,6 +10,7 @@ import Foundation
 enum Requests {
     case allList
     case search(String)
+    case fullname(String)
     
     var path: String {
         switch self {
@@ -17,6 +18,8 @@ enum Requests {
             return "/v3.1/all"
         case .search(let searchText):
             return "/v3.1/name/\(searchText)"
+        case .fullname(let searchText):
+            return "/v3.1/name/\(searchText)?fullText=true"
         }
     }
 }

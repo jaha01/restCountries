@@ -20,7 +20,7 @@ final class MockCountriesService: CountriesServiceProtocol {
         
     }
     
-    func loadCountry(fullName: String, completion: @escaping (Country) -> Void) {
+    func loadCountry(fullName: String, completion: @escaping ([Country]) -> Void) {
         
     }
     

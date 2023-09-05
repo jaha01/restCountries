@@ -14,7 +14,7 @@ import Foundation
 protocol CountriesServiceProtocol {
     func loadCountries(completion: @escaping([Country])->Void)
     func loadFilteredCountries(searchText: String, completion: @escaping([Country])->Void)
-    func loadCountry(fullName: String, completion: @escaping(Country) -> Void)
+    func loadCountry(fullName: String, completion: @escaping([Country]) -> Void)
 }
 
 class CountriesService: CountriesServiceProtocol {
@@ -34,8 +34,9 @@ class CountriesService: CountriesServiceProtocol {
         loadCountries(path: request.path, completion: completion)
     }
     
-    func loadCountry(fullName: String, completion: @escaping(Country) -> Void) {
-        
+    func loadCountry(fullName: String, completion: @escaping([Country]) -> Void) {
+        let request = Requests.fullname(fullName)
+        loadCountries(path: request.path, completion: completion)
     }
     
     private func loadCountries<T: Codable>(path: String, completion: @escaping(T)->Void) {

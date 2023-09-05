@@ -32,9 +32,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //view.backgroundColor = .blue
-        // Do any additional setup after loading the view.
-        countriesService.loadCountries { [weak self] countries in //countriesServise, countriesLoadData
+
+        countriesService.loadCountries { [weak self] countries in
             let countriesViewData = countries.map { CountryViewData(country: $0) }
             guard let self = self else {return}
             DispatchQueue.main.async {
@@ -90,14 +89,27 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate, UISearchBa
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if searchText != "" {
-            countriesService.loadFilteredCountries(searchText: searchText) { [weak self] data in
+//            countriesService.loadFilteredCountries(searchText: searchText) { [weak self] data in
+//                print("data = \(data)")
+//                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+//                guard let self = self else {return}
+//                DispatchQueue.main.async {
+//                    self.allCountries = data
+//                    self.tableView.reloadData()
+//                }
+//            }
+            
+            countriesService.loadCountry(fullName: searchText) { [weak self] country in
                 guard let self = self else {return}
+                print("searchText = \(searchText)")
+                let countriesViewData = country.map { CountryViewData(country: $0) }
                 DispatchQueue.main.async {
-                    self.allCountries = data
+                    self.allCountries = country
                     self.tableView.reloadData()
                 }
             }
         } else if searchText == "" {
+            print("else")
             countriesService.loadCountries { [weak self] countries in //countriesServise, countriesLoadData
                 let countriesViewData = countries.map { CountryViewData(country: $0) }
                 guard let self = self else {return}
@@ -107,6 +119,16 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate, UISearchBa
                 }
             }
         }
+    }
+    
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        print("* - \(searchBar.text)")
+    }
+    
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        print("+++ - \(searchBar.text)")
+        return true
     }
     
 }
