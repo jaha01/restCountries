@@ -32,15 +32,9 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        countriesService.loadCountries { [weak self] countries in
-            let countriesViewData = countries.map { CountryViewData(country: $0) }
-            guard let self = self else {return}
-            DispatchQueue.main.async {
-                self.allCountries = countries
-                self.tableView.reloadData()
-            }
-            
+        
+        countriesService.loadCountries { [weak self] result in
+            self?.handleResult(result)
         }
         view.addSubview(tableView)
         navigationItem.title = "Countires List"
@@ -79,7 +73,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate, UISearchBa
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let country = allCountries[indexPath.row]
-        let vc = CountryInfoViewController(countriesService: countriesService, item: CountryViewData(country: country))
+        let vc = CountryInfoViewController(countriesService: countriesService, item: country.name.common)
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -89,34 +83,22 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate, UISearchBa
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if searchText != "" {
-//            countriesService.loadFilteredCountries(searchText: searchText) { [weak self] data in
-//                print("data = \(data)")
-//                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-//                guard let self = self else {return}
-//                DispatchQueue.main.async {
-//                    self.allCountries = data
-//                    self.tableView.reloadData()
-//                }
-//            }
+            //            countriesService.loadFilteredCountries(searchText: searchText) { [weak self] data in
+            //                print("data = \(data)")
+            //                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            //                guard let self = self else {return}
+            //                DispatchQueue.main.async {
+            //                    self.allCountries = data
+            //                    self.tableView.reloadData()
+            //                }
+            //            }
             
-            countriesService.loadCountry(fullName: searchText) { [weak self] country in
-                guard let self = self else {return}
-                print("searchText = \(searchText)")
-                let countriesViewData = country.map { CountryViewData(country: $0) }
-                DispatchQueue.main.async {
-                    self.allCountries = country
-                    self.tableView.reloadData()
-                }
+            countriesService.loadFilteredCountries(searchText: searchText) { [weak self] result in
+                self?.handleResult(result)
             }
         } else if searchText == "" {
-            print("else")
-            countriesService.loadCountries { [weak self] countries in //countriesServise, countriesLoadData
-                let countriesViewData = countries.map { CountryViewData(country: $0) }
-                guard let self = self else {return}
-                DispatchQueue.main.async {
-                    self.allCountries = countries
-                    self.tableView.reloadData()
-                }
+            countriesService.loadCountries { [weak self] result in //countriesServise, countriesLoadData
+                self?.handleResult(result)
             }
         }
     }
@@ -131,4 +113,27 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate, UISearchBa
         return true
     }
     
+    private func handleResult(_ result: Result<[Country],Error>) {
+        switch result {
+        case .success(let countries):
+            self.allCountries = countries
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
+            }
+        case .failure(let error):
+            DispatchQueue.main.async { [weak self] in
+                self?.showError(error)
+            }
+        }
+    }
+}
+
+
+extension UIViewController {
+     func showError(_ error: Error) {
+        let message = (error as? CustomError)?.message ?? error.localizedDescription
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(alert, animated: true)
+    }
 }
